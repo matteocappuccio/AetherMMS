@@ -1,0 +1,267 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AetherMMS Report</title>
+  <style>
+    :root {
+      --bg: #071020;
+      --panel: #0d1326;
+      --panel2: #101a33;
+      --line: #274276;
+      --text: #e8f0ff;
+      --muted: #9ab7e8;
+      --blue: #4a90e2;
+      --cyan: #9dccff;
+      --green: #00e676;
+      --orange: #ff9800;
+      --red: #f44336;
+      --yellow: #ffc107;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: radial-gradient(circle at top left, rgba(74,144,226,.22), transparent 34rem), var(--bg);
+      color: var(--text);
+      font-family: "Segoe UI", Arial, sans-serif;
+      line-height: 1.45;
+    }
+    .wrap { width: min(1180px, calc(100% - 40px)); margin: 0 auto; }
+    header {
+      padding: 34px 0 24px;
+      border-bottom: 1px solid rgba(157,204,255,.18);
+      background: linear-gradient(180deg, rgba(7,16,32,.98), rgba(7,16,32,.72));
+    }
+    .hero { display: block; }
+    .eyebrow { color: var(--cyan); letter-spacing: 3px; text-transform: uppercase; font-size: 12px; font-weight: 700; }
+    h1 { margin: 8px 0 8px; font-size: clamp(34px, 5vw, 62px); line-height: 1; letter-spacing: .08em; }
+    .subtitle { color: var(--muted); max-width: 820px; margin: 0; font-size: 17px; }
+    .meta-row { margin-top: 18px; display: flex; flex-wrap: wrap; gap: 10px; }
+    .chip { border: 1px solid var(--line); border-radius: 999px; padding: 7px 11px; color: var(--muted); background: rgba(13,19,38,.72); font-size: 13px; }
+    .section { padding: 28px 0; }
+    .section-title { display: flex; justify-content: space-between; gap: 16px; align-items: end; margin-bottom: 14px; }
+    h2 { margin: 0; font-size: 22px; letter-spacing: .06em; text-transform: uppercase; color: var(--cyan); }
+    .cards { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; }
+    .card, .window-card, .figure-card {
+      border: 1px solid rgba(157,204,255,.18);
+      background: linear-gradient(180deg, rgba(16,26,51,.92), rgba(9,14,28,.92));
+      box-shadow: 0 12px 34px rgba(0,0,0,.22);
+    }
+    .card { padding: 16px; border-radius: 8px; }
+    .label { color: var(--muted); font-size: 12px; text-transform: uppercase; letter-spacing: .12em; }
+    .value { margin-top: 8px; font-size: 26px; font-weight: 750; }
+    .base-status { color: var(--green); }
+    .base-status.yellow { color: var(--yellow); }
+    .base-status.orange { color: var(--orange); }
+    .base-status.red { color: var(--red); }
+    .windows { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    .window-card { padding: 18px; border-radius: 8px; }
+    .window-card.best { border-color: rgba(0,230,118,.42); }
+    .window-card.worst { border-color: rgba(244,67,54,.42); }
+    .window-title { display:flex; justify-content:space-between; gap:12px; color: var(--muted); text-transform: uppercase; letter-spacing:.1em; font-size: 12px; }
+    .time { color: var(--text); font-size: 26px; font-weight: 750; margin: 8px 0 12px; }
+    .metrics { display:grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+    .metric { border-top: 1px solid rgba(157,204,255,.15); padding-top: 8px; }
+    .metric strong { display:block; font-size: 18px; }
+    .metric span { color: var(--muted); font-size: 12px; }
+    .figure-grid { display: grid; gap: 18px; }
+    .figure-card { border-radius: 8px; overflow: hidden; }
+    .figure-copy { padding: 15px 16px 0; }
+    .figure-copy h3 { margin: 0 0 4px; font-size: 18px; color: var(--text); }
+    .figure-copy p { margin: 0 0 12px; color: var(--muted); }
+    .figure-card img { display:block; width:100%; height:auto; border-top: 1px solid rgba(157,204,255,.15); background: var(--bg); }
+    pre {
+      margin: 0;
+      padding: 16px;
+      overflow:auto;
+      border-radius: 8px;
+      border: 1px solid rgba(157,204,255,.18);
+      background: rgba(5,8,18,.7);
+      color: var(--muted);
+      font-size: 12px;
+    }
+    footer { padding: 28px 0 42px; color: var(--muted); border-top: 1px solid rgba(157,204,255,.15); }
+    @media (max-width: 860px) {
+      .cards { grid-template-columns: repeat(2, 1fr); }
+      .windows { grid-template-columns: 1fr; }
+      .metrics { grid-template-columns: repeat(2, 1fr); }
+    }
+    </style>
+</head>
+<body>
+  <header>
+    <div class="wrap hero">
+      
+      <div>
+        <div class="eyebrow">GNSS Planning Insight</div>
+        <h1>AetherMMS</h1>
+        <div class="meta-row">
+          <span class="chip">Survey UTC: 2026-05-09 10:00:00</span>
+          <span class="chip">Report: HTML + PNG</span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <section class="section">
+      <div class="section-title"><h2>Mission Overview</h2></div>
+      <div class="cards">
+        <div class="card"><div class="label">Route Length</div><div class="value">4548 m</div></div>
+        <div class="card"><div class="label">Speed</div><div class="value">30.0 km/h</div></div>
+        <div class="card"><div class="label">Epochs</div><div class="value">546</div></div>
+        <div class="card"><div class="label">Sat.-Epoch Obs.</div><div class="value">7504</div></div>
+        <div class="card"><div class="label">Buildings</div><div class="value">1047</div></div>
+        <div class="card"><div class="label">Trees</div><div class="value">1102</div></div>
+        <div class="card"><div class="label">Survey Bases</div><div class="value">2</div></div>
+        <div class="card"><div class="label">Base Distance</div><div class="value base-status green">3.35 km</div></div>
+        <div class="card"><div class="label">Tunnels / Covered</div><div class="value">1</div></div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-title"><h2>Temporal Prediction</h2></div>
+      <div class="windows">
+        <article class="window-card best">
+          <div class="window-title"><span>Best Window</span><span>97.1/100</span></div>
+          <div class="time">21:15:00</div>
+          <div class="metrics">
+            <div class="metric"><strong>13.4</strong><span>avg LOS</span></div>
+            <div class="metric"><strong>2.36</strong><span>avg PDOP</span></div>
+            <div class="metric"><strong>96%</strong><span>continuity</span></div>
+            <div class="metric"><strong>97.1/100</strong><span>score</span></div>
+          </div>
+        </article>
+        <article class="window-card worst">
+          <div class="window-title"><span>Worst Window</span><span>70.5/100</span></div>
+          <div class="time">16:15:00</div>
+          <div class="metrics">
+            <div class="metric"><strong>9.9</strong><span>avg LOS</span></div>
+            <div class="metric"><strong>11.48</strong><span>avg PDOP</span></div>
+            <div class="metric"><strong>87%</strong><span>continuity</span></div>
+            <div class="metric"><strong>70.5/100</strong><span>score</span></div>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-title"><h2>Figures</h2><span class="chip">Click any figure to open the PNG</span></div>
+      <div class="figure-grid">
+        
+      <article class="figure-card">
+        <div class="figure-copy">
+          <h3>Best / Worst Temporal Windows</h3>
+          <p>Side-by-side trajectory comparison, with LOS class coloring and transparent buildings/trees.</p>
+        </div>
+        <a href="png/best_worst_temporal_windows.png" target="_blank" rel="noopener">
+          <img src="png/best_worst_temporal_windows.png" alt="Best / Worst Temporal Windows">
+        </a>
+      </article>
+    
+
+      <article class="figure-card">
+        <div class="figure-copy">
+          <h3>Temporal Scores</h3>
+          <p>Refined candidate score distribution used to select final best and worst windows.</p>
+        </div>
+        <a href="png/temporal_window_scores.png" target="_blank" rel="noopener">
+          <img src="png/temporal_window_scores.png" alt="Temporal Scores">
+        </a>
+      </article>
+    
+
+      <article class="figure-card">
+        <div class="figure-copy">
+          <h3>Trajectory LOS Quality</h3>
+          <p>Full mission trajectory colored by LOS satellite count with planimetric urban context.</p>
+        </div>
+        <a href="png/trajectory_los_quality.png" target="_blank" rel="noopener">
+          <img src="png/trajectory_los_quality.png" alt="Trajectory LOS Quality">
+        </a>
+      </article>
+    
+
+      <article class="figure-card">
+        <div class="figure-copy">
+          <h3>Satellite Counts</h3>
+          <p>Present, LOS, NLOS and vegetation-degraded satellites vs time and progressive distance.</p>
+        </div>
+        <a href="png/satellite_count_los_nlos_vegetation_present.png" target="_blank" rel="noopener">
+          <img src="png/satellite_count_los_nlos_vegetation_present.png" alt="Satellite Counts">
+        </a>
+      </article>
+    
+
+      <article class="figure-card">
+        <div class="figure-copy">
+          <h3>PDOP LOS</h3>
+          <p>PDOP computed from pure LOS satellites, shown by time and progressive distance.</p>
+        </div>
+        <a href="png/pdop_los_profile.png" target="_blank" rel="noopener">
+          <img src="png/pdop_los_profile.png" alt="PDOP LOS">
+        </a>
+      </article>
+    
+
+      <article class="figure-card">
+        <div class="figure-copy">
+          <h3>Sky Visibility Index</h3>
+          <p>SVI for Total, GPS and Galileo, shown by time and progressive distance.</p>
+        </div>
+        <a href="png/sky_visibility_index.png" target="_blank" rel="noopener">
+          <img src="png/sky_visibility_index.png" alt="Sky Visibility Index">
+        </a>
+      </article>
+    
+
+      <article class="figure-card">
+        <div class="figure-copy">
+          <h3>Skyplot</h3>
+          <p>Selected epoch skyplot with GPS/Galileo marker distinction and status coloring.</p>
+        </div>
+        <a href="png/skyplot_selected_epoch.png" target="_blank" rel="noopener">
+          <img src="png/skyplot_selected_epoch.png" alt="Skyplot">
+        </a>
+      </article>
+    
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-title"><h2>Metadata</h2></div>
+      <pre>AetherMMS Python Core metadata
+============================
+
+software: AetherMMS Python Core
+survey_date_utc: 2026-05-09
+survey_start_time_utc: 10:00:00
+survey_speed_kmh: 30.0
+route_length_m: 4548.109
+epochs: 546
+satellite_looks: 7504
+buildings_in_buffer: 1047
+trees_in_buffer: 1102
+tunnels_detected: 1
+survey_bases: 2
+base_coverage:
+  status: green
+  color: #00e676
+  max_km: 3.353544620253408
+  label: OK - entire trajectory within 5 km of the bases (max 3.35 km)
+dem_stats:
+  route_dem_samples: 379
+  route_base_m: 44.194
+  buildings: 1047
+  trees: 1102
+html_faithful_core: True
+</pre>
+    </section>
+  </main>
+
+  <footer>
+    <div class="wrap">AetherMMS Python Core - GNSS Planning Insight</div>
+  </footer>
+</body>
+</html>

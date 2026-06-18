@@ -1,0 +1,50 @@
+﻿# AetherMMS config - edit values on the left, notes are on the right.
+
+[folders]
+data_dir = Data                                        # input folder
+output_dir = results                                   # output folder
+
+[inputs]
+dem_geotiff = DTM5x5.tif                               # DTM GeoTIFF
+trajectory_kml = Traj.kml                              # MMS trajectory
+buildings_geojson = Buildings.geojson                  # buildings
+trees_geojson = Trees.geojson                          # trees, optional
+bases_kml = GNSSBases.kml                              # GNSS bases, optional
+gps_yuma = GPS_yuma.alm                                # GPS almanac
+galileo_xml = Galileo.xml                              # Galileo almanac
+
+[survey]
+lidar_range_m = 100.0                                  # city buffer around route
+antenna_height_m = 2.20                                # GNSS antenna height
+date_utc = 2026-05-09                                  # survey date UTC
+start_time_utc = 10:00:00                              # survey start UTC
+speed_kmh = 30.0                                       # vehicle speed
+elevation_mask_deg = 10.0                              # satellite mask angle
+step_sec = 1                                           # 1 = main 1 Hz run
+constellations = GPS, Galileo                          # enabled constellations
+
+[osm]
+osm_enabled = true                                     # detect tunnels/covered roads
+osm_use_cache = true                                   # use cache if present
+osm_cache_file = osm_tunnels_cache.geojson             # OSM tunnel cache
+overpass_timeout_s = 25                                # query timeout
+overpass_endpoints = https://overpass-api.de/api/interpreter, https://overpass.kumi.systems/api/interpreter, https://overpass.openstreetmap.ru/api/interpreter  # fallback servers
+
+[best_worst_windows]
+planning_enabled = true                                # run temporal prediction
+planning_start_time_utc = 06:00:00                     # first tested time
+planning_end_time_utc = 22:00:00                       # last tested time
+planning_step_minutes = 30                             # preview time step
+planning_seed_count = 6                                # 6 best + 6 worst seeds
+planning_refine_offset_minutes = 15                    # test seed +/- this value
+planning_preview_max_epochs = 42                       # quick route samples
+planning_refinement_max_epochs = 90                    # refined route samples
+planning_include_vegetation = true                     # preview skips vegetation; refinement includes tree crowns/trunks
+
+[ray_tracing]
+max_ray_km = 1.2                                       # search distance along each GNSS ray
+
+[figures]
+figure_dpi = 180                                       # PNG resolution
+selected_skyplot_mode = time                           # time or distance
+selected_skyplot_value =                               # seconds or metres; empty = middle
