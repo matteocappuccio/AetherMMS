@@ -50,6 +50,7 @@ class DemModel:
     inv_transform: Any
     xy_transformer: Transformer | None = None
     route_base_m: float = 0.0
+    res_m: float = 5.0
 
     def sample(self, lon: float, lat: float) -> float:
         """Sample absolute DTM elevation at lon/lat. Returns NaN outside/nodata.
@@ -125,7 +126,14 @@ def load_dem(path: Path) -> DemModel:
     arr = ds.read(1, masked=False)
     crs = CRS.from_user_input(ds.crs)
     xy_transformer = None if crs == WGS84 else Transformer.from_crs(WGS84, crs, always_xy=True)
-    return DemModel(path=path, crs=crs, transform=ds.transform, nodata=ds.nodata, dataset=ds, array=arr, inv_transform=(~ds.transform), xy_transformer=xy_transformer)
+    # Ground sampling distance of the DTM, in metres. The terrain ray-tracing
+    # samples the profile at this resolution (Section 2.6 of the manual).
+    res_m = abs(float(ds.transform.a))
+    if crs.is_geographic:
+        res_m *= 111320.0  # degrees -> metres (approximate, for lon/lat DTMs)
+    if not math.isfinite(res_m) or res_m <= 0:
+        res_m = 5.0
+    return DemModel(path=path, crs=crs, transform=ds.transform, nodata=ds.nodata, dataset=ds, array=arr, inv_transform=(~ds.transform), xy_transformer=xy_transformer, res_m=res_m)
 
 
 def _strip_ns(tag: str) -> str:

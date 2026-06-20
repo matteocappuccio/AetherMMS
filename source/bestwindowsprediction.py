@@ -196,7 +196,8 @@ def is_ray_blocked_by_buildings(lon: float, lat: float, antenna_h: float, az: fl
 
 
 def is_ray_blocked_by_dem(lon: float, lat: float, antenna_h: float, az: float, el: float, dem, max_km: float = 1.2) -> RayBlock:
-    """Port of HTML isRayBlockedByDem(): profile sampling every 10--30 m."""
+    """Terrain obstruction: the DTM profile is sampled along the ray azimuth at
+    the DTM ground resolution, so the step adapts to the input DTM."""
     if el <= 0 or not math.isfinite(el):
         return RayBlock(blocked=False)
     if not dem.contains_lonlat(lon, lat):
@@ -206,7 +207,7 @@ def is_ray_blocked_by_dem(lon: float, lat: float, antenna_h: float, az: float, e
         return RayBlock(blocked=False, reason="origin-dem-nodata")
     tan_el = math.tan(math.radians(el))
     max_m = max(50.0, max_km * 1000.0)
-    step_m = max(10.0, min(30.0, max_m / 70.0))
+    step_m = max(1.0, float(getattr(dem, "res_m", 5.0)))
     antenna_abs = origin_terrain + antenna_h
     # Same loop bound as the JS for-loop (no epsilon): both accumulate d with
     # identical IEEE additions, so the sampled profile distances stay in sync.
