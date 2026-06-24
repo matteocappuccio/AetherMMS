@@ -1,14 +1,10 @@
 """AetherMMS city-building module.
-
-This module mirrors the data-ingestion / urban reconstruction part of the
-original AetherMMS HTML/JavaScript implementation:
-
 - DTM is mandatory and is sampled along the route and obstruction features.
 - Buildings and trees are filtered to the MMS LiDAR buffer.
 - OSM tunnel / covered road / overpass querying is optional and controlled by
   config/config.txt.
 - Geometry is pre-indexed in a local metric CRS so the GNSS ray-tracing module
-  can reproduce the original ray tests without doing an all-features loop for
+  can reproduce the ray tests without doing an all-features loop for
   every satellite.
 """
 from __future__ import annotations
@@ -101,8 +97,7 @@ class MetricScene:
     Coordinates are in a local ENU / tangent-plane CRS (azimuthal equidistant)
     centred on the route midpoint, so the North axis is true North and the ENU
     satellite azimuths are reused as planar bearings, faithfully to the Turf.js
-    HTML prototype. The original HTML uses Turf bbox filtering and line/footprint
-    intersections; this object provides the same logic efficiently in Python.
+    HTML prototype.
     """
     fwd: Transformer
     inv: Transformer

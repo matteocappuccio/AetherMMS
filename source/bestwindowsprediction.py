@@ -1,13 +1,4 @@
 """AetherMMS GNSS visibility and temporal-window prediction.
-
-This module ports the scientific behaviour of the HTML implementation, notably
-`runGnssPlanningAt1Hz`, `isRayBlockedByDem`, `isRayBlockedByBuildings`,
-`isRayAffectedByTrees`, `classifyGnssObstruction` and `scoreSurveyWindow`.
-
-The important point is speed and fidelity: building obstruction is not sampled
-against every footprint. As in the browser version, a horizontal ray is built in
-satellite azimuth direction, candidate footprints are bbox/spatial-index filtered,
-then exact ray-footprint intersections provide the first blocking distance.
 """
 from __future__ import annotations
 
